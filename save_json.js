@@ -1,15 +1,17 @@
 const fs = require("fs");
 const path = require("path");
-const AWS = require("aws-sdk");
-const s3 = new AWS.S3()
 
-const save = async (favNumber) => {
+const save = (favNumber) => {
   console.log("saving");
-  await s3.putObject({
-    Body: JSON.stringify(favNumber, null, 2),
-    Bucket: "cyclic-expensive-gray-betta-eu-north-1",
-    Key: "number.json",
-  }).promise()
+  fs.writeFile(
+    path.join(__dirname, ".", "number.json"),
+    JSON.stringify(favNumber, null, 2),
+    (error) => {
+      if (error) {
+        throw error;
+      }
+    }
+  );
 };
 
 module.exports = { save };
